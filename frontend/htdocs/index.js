@@ -28,6 +28,17 @@ function createAlert(text) {
   document.getElementById('alert').innerHTML = '<div class="alert alert-danger d-flex align-items-center" role="alert"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg><div>' + text + '</div></div>'
 }
 
+function updateData() {
+  console.log('[EC] Update Data')
+  chart.updateSeries([{
+    data: envData.map(v => {
+      let options = {month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}
+      let date = new Date(Date.parse(v.timepoint))
+      return {x: date.toLocaleDateString('en-GB', options), y: v.temperature}
+    })
+  }])
+}
+
 function updateControllerStatus() {
   document.getElementById('controller-name').innerHTML = controllers[controllerIndex].name
   document.getElementById('controller-status').innerHTML = controllers[controllerIndex].state == 'online' ? '🟢 ONLINE' : '🔴 OFFLINE'
@@ -80,10 +91,11 @@ function handleEnvData(data) {
   envData = data.data.env_data
   document.getElementById('controller-th').innerHTML = envData[envData.length - 1].temperature + '° ' + envData[envData.length - 1].humidity + '%'
   updateControllerStatus()
+  updateData()
 }
 
 function initWebsocketConnection() {
-  socket = new WebSocket('ws://' + location.host + ':8080/api');
+  socket = new WebSocket('ws://' + location.host + ':8080/api')
 
   socket.addEventListener('message', ev => {
     let data = JSON.parse(ev.data);
@@ -102,7 +114,7 @@ function initWebsocketConnection() {
     } else if ('command' in data) {
       console.log('[WS] Got command: ' + ev.data);
     }
-  });
+  })
 
   socket.addEventListener('open', ev => {
     console.log('[WS] Connection Opened')
@@ -114,11 +126,16 @@ function initWebsocketConnection() {
       }
     }
     socket.send(JSON.stringify(data));
-  });
+  })
 
   socket.addEventListener('close', ev => {
     console.log('[WS] Connection Closed')
-  });
+  })
+
+  socket.addEventListener('error', ev => {
+    console.log('[WS] Connection Error')
+    createAlert('Connection Error')
+  })
 }
 
 function fanStart() {
@@ -186,33 +203,19 @@ function createChart() {
   chart.render();
 }
 
-function scheduleUpdate() {
-  setTimeout(() => {
-    console.log('[EC] scheduleUpdate')
-    console.log(envData)
-    chart.updateSeries([{
-      data: envData.map(v => {
-        let options = {month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}
-        let date =  new Date(Date.parse(v.timepoint))
-        return {x: date.toLocaleDateString('en-GB', options), y: v.temperature}
-      })
-    }])
-  }, 2500);
-}
 
 function updateCurrentData() {
   if (socket.readyState == 1) {
     getControllers()
     setTimeout(() => {
       getData(controllers[controllerIndex].name)
-      scheduleUpdate()
     }, 2500)
   }
 }
 
 function entryPoint() {
-  getControllers()
   createChart()
+  getControllers()
   updateCurrentData()
   setInterval(updateCurrentData, 15000)
 }
