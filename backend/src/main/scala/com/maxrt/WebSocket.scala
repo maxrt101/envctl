@@ -28,6 +28,11 @@ class WebSocket {
   @OnError
   def onError(session: Session, throwable: Throwable): Unit = {
     WebSocket.logger.info(s"[ws] (${session.getId()}) Error: ${throwable.toString}")
+    Protocol.sessions.get(session.getId) match {
+      case Some(senderName) => Protocol.clients.remove(senderName)
+      case None => WebSocket.logger.error(s"[ws] No client record for session id ${session.getId}")
+    }
+    Protocol.sessions.remove(session.getId)
   }
 
   @OnMessage

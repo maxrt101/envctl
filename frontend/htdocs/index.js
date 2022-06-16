@@ -122,7 +122,7 @@ function fanStart() {
     sender: clientId,
     data: {
       controller: controllers[controllerIndex].name,
-      speed: parseInt(document.getElementById('speedInput').innerHTML)
+      speed: parseInt(document.getElementById('speedInput').value)
     }
   }
   socket.send(JSON.stringify(data))
@@ -145,8 +145,8 @@ function temperatureRule() {
     sender: clientId,
     data: {
       controller: controllers[controllerIndex],
-      speed: parseInt(document.getElementById('speedInput').innerHTML),
-      threshold: parseInt(document.getElementById('temperatureInput').innerHTML)
+      speed: parseInt(document.getElementById('speedInput').value),
+      threshold: parseInt(document.getElementById('temperatureInput').value)
     }
   }
   socket.send(JSON.stringify(data))
