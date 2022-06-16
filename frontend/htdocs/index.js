@@ -198,8 +198,10 @@ function scheduleUpdate() {
 function updateCurrentData() {
   if (socket.readyState == 1) {
     getControllers()
-    getData(controllers[controllerIndex].name)
-    scheduleUpdate()
+    setTimeout(() => {
+      getData(controllers[controllerIndex].name)
+      scheduleUpdate()
+    }, 2000)
   }
 }
 

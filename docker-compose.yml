@@ -23,7 +23,7 @@ services:
       - 8080:8080
     environment:
       JAR_FILE: envctl.jar
-      JAR_URL: https://github.com/maxrt101/envctl/releases/download/v1.1/envctl.jar
+      JAR_URL: https://github.com/maxrt101/envctl/releases/download/v1.2/envctl.jar
     command: /bin/sh -c "wget $$JAR_URL -O $$JAR_FILE && java -jar $$JAR_FILE"
 
   frontend:
