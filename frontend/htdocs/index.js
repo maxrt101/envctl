@@ -28,19 +28,23 @@ function createAlert(text) {
   document.getElementById('alert').innerHTML = '<div class="alert alert-danger d-flex align-items-center" role="alert"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg><div>' + text + '</div></div>'
 }
 
-function updateStatus(i) {
-  controllerIndex = i
-  document.getElementById('controller-name').innerHTML = controllers[i].name
-  document.getElementById('controller-status').innerHTML = controllers[i].state == 'online' ? '🟢 ONLINE' : '🔴 OFFLINE'
+function updateControllerStatus() {
+  document.getElementById('controller-name').innerHTML = controllers[controllerIndex].name
+  document.getElementById('controller-status').innerHTML = controllers[controllerIndex].state == 'online' ? '🟢 ONLINE' : '🔴 OFFLINE'
   updateCurrentData()
   scheduleUpdate()
+}
+
+function setController(i) {
+  controllerIndex = i
+  updateControllerStatus()
 }
 
 function generateButtons() {
   console.log('generateButtons: ' + controllers)
   document.getElementById('controller-buttons').innerHTML = ""
   for (var i = 0; i < controllers.length; i++) {
-    let html = '<button type="button" id="' + controllers[i].name +'" class="mb-2 btn btn-outline-primary" onclick="updateStatus(' + i + ')">' + controllers[i].name + '</div>'
+    let html = '<button type="button" id="' + controllers[i].name +'" class="mb-2 btn btn-outline-primary" onclick="setController(' + i + ')">' + controllers[i].name + '</div>'
     document.getElementById('controller-buttons').innerHTML += html
   }
 }
@@ -75,6 +79,7 @@ function handleController(data) {
 function handleEnvData(data) {
   envData = data.data.env_data
   document.getElementById('controller-th').innerHTML = envData[envData.length - 1].temperature + '° ' + envData[envData.length - 1].humidity + '%'
+  updateControllerStatus()
 }
 
 function initWebsocketConnection() {
@@ -144,7 +149,7 @@ function temperatureRule() {
     command: 'fan_rule',
     sender: clientId,
     data: {
-      controller: controllers[controllerIndex],
+      controller: controllers[controllerIndex].name,
       speed: parseInt(document.getElementById('speedInput').value),
       threshold: parseInt(document.getElementById('temperatureInput').value)
     }
