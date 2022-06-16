@@ -21,7 +21,7 @@ object App {
 
     JavaxWebSocketServletContainerInitializer.configure(context, (servletContext, wsContainer) => {
       wsContainer.setDefaultMaxTextMessageBufferSize(65535)
-      wsContainer.setDefaultMaxSessionIdleTimeout(3600000)
+      wsContainer.setDefaultMaxSessionIdleTimeout(30000) // 30s
       wsContainer.addEndpoint(classOf[WebSocket])
     })
 

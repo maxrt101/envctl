@@ -10,6 +10,21 @@ object Protocol {
   val clients = Map.empty[String, Client] // [sender_name, (type, session)]
   var sessions = Map.empty[String, String] // [session_id, sender_name]
 
+  val commands = Map(
+    "register"        -> Command.register,
+    "unregister"      -> Command.unregister,
+    "reregister"      -> Command.reregister,
+    "get_controllers" -> Command.getControllers,
+    "get_data"        -> Command.getData,
+    "update_data"     -> Command.updateData,
+    "update_name"     -> Command.updateName,
+    "update_server"   -> Command.updateServer,
+    "fan_start"       -> Command.fanStart,
+    "fan_stop"        -> Command.fanStop,
+    "fan_rule"        -> Command.fanRule,
+    "ping"            -> Command.ping
+  )
+
   def formResponse(responseStatus: String, data: JSONObject = null): JSONObject = {
     val result = new JSONObject()
     result.put("status", responseStatus)
@@ -50,20 +65,6 @@ object Protocol {
 
   def handleCommand(session: Session, json: JSONObject): JSONObject = {
     val sender = json.getString("sender")
-    json.getString("command") match {
-      case "register" => Command.register(sender, json, session)
-      case "unregister" => Command.unregister(sender, json, session)
-      case "reregister" => Command.reregister(sender, json, session)
-      case "get_controllers" => Command.getControllers(sender, json, session)
-      case "get_data" => Command.getData(sender, json, session)
-      case "update_data" => Command.updateData(sender, json, session)
-      case "update_name" => Command.updateName(sender, json, session)
-      case "update_server" => Command.updateServer(sender, json, session)
-      case "fan_start" => Command.fanStart(sender, json, session)
-      case "fan_stop" => Command.fanStop(sender, json, session)
-      case "fan_rule" => Command.fanRule(sender, json, session)
-      case _ =>
-        formError("Unknown command")
-    }
+    commands.getOrElse(json.getString("command"), (sender: String, json: JSONObject, session: Session) => formError("Unknown command"))(sender, json, session);
   }
 }

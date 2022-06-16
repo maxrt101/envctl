@@ -168,4 +168,8 @@ object Command {
     })
   }
 
+  def ping(sender: String, json: JSONObject, session: Session): JSONObject = {
+    Protocol.formResponse("ok")
+  }
+
 }

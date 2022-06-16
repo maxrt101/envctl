@@ -121,7 +121,7 @@ function fanStart() {
     command: 'fan_start',
     sender: clientId,
     data: {
-      controller: controllers[controllerIndex],
+      controller: controllers[controllerIndex].name,
       speed: parseInt(document.getElementById('speedInput').innerHTML)
     }
   }
@@ -133,7 +133,7 @@ function fanStop() {
     command: 'fan_stop',
     sender: clientId,
     data: {
-      controller: controllers[controllerIndex]
+      controller: controllers[controllerIndex].name
     }
   }
   socket.send(JSON.stringify(data))
@@ -153,7 +153,7 @@ function temperatureRule() {
 }
 
 // [{x: string, y: float}]
-function renderChart(data) {
+function createChart() {
   document.getElementById("graph").innerHTML = ""
   chart = new ApexCharts(document.getElementById("graph"), {
     chart: {
@@ -169,7 +169,7 @@ function renderChart(data) {
       }
     },
     series: [{
-      data: data
+      data: []
     }],
     yaxis: {
       type: 'category'
@@ -183,28 +183,32 @@ function renderChart(data) {
 
 function scheduleUpdate() {
   setTimeout(() => {
-    console.log('scheduleUpdate: ' + envData)
+    console.log('[EC] scheduleUpdate')
     console.log(envData)
-    renderChart(envData.map(v => {
-      let options = {year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}
-      let date =  new Date(Date.parse(v.timepoint))
-      return {x: date.toLocaleDateString('en-GB', options), y: v.temperature}
-    }))
+    chart.updateSeries([{
+      data: envData.map(v => {
+        let options = {month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}
+        let date =  new Date(Date.parse(v.timepoint))
+        return {x: date.toLocaleDateString('en-GB', options), y: v.temperature}
+      })
+    }])
   }, 2000);
 }
 
 function updateCurrentData() {
   if (socket.readyState == 1) {
+    getControllers()
     getData(controllers[controllerIndex].name)
     scheduleUpdate()
   }
 }
 
 function entryPoint() {
-  getControllers();
-  setTimeout(updateCurrentData, 2000);
-  setInterval(updateCurrentData, 20000);
+  getControllers()
+  createChart()
+  setTimeout(updateCurrentData, 2000)
+  setInterval(updateCurrentData, 15000)
 }
 
-initWebsocketConnection();
-setTimeout(entryPoint, 1000);
+initWebsocketConnection()
+setTimeout(entryPoint, 1000)
