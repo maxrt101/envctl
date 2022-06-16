@@ -1,6 +1,4 @@
 
-CREATE DATABASE controller;
-
 \c controller
 
 CREATE TABLE IF NOT EXISTS controller (

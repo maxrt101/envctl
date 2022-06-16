@@ -2,6 +2,9 @@
 # Java
 target/
 
+# Postgres Data
+postgres-data
+
 # IDE/Editors
 .idea/
 .vscode
