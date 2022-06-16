@@ -11,10 +11,12 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   </head>
   <body>
-    <div class="container">
+    <div class="container mt-4">
       <div class="row">
         <div class="col-2 border-0 p-3 shadow bg-body rounded">
-          <h2 class="mb-4 text-truncate">Controllers:<h21>
+          <div class="mb-2">
+            <h2 class="text-truncate">Controllers:<h2>
+          </div>
           <div id="controller-buttons" class="d-flex flex-column justify-content-center"></div>
         </div>
         <div class="col-10">
@@ -26,16 +28,16 @@
                     <h1 id="controller-name">Controller</h1>
                   </div>
                   <div class="dropdown d-flex align-items-center">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                       Fan
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <li><button class="dropdown-item" onclick="fanStart()">Start</button></li>
                       <li><button class="dropdown-item" onclick="fanStop()">Stop</button></li>
                       <li><hr class="dropdown-divider"></li>
                       <li class="ps-2 pe-2">
                         <div class="d-flex justify-content-center align-items-center">
-                          <span class="font-weight-bold indigo-text">0</span>
+                          <span class="font-weight-bold indigo-text">1</span>
                           <form class="range-field d-flex align-items-center ms-2 me-2">
                             <input class="border-0" type="range" min="1" max="100" id="speedInput" />
                           </form>
@@ -46,12 +48,15 @@
                       <li>
                         <div class="d-flex justify-content-center align-items-center ms-2 me-2">
                           <input type="input" class="form-control me-2" id="temperatureInput">
-                          <button type="submit" class="btn btn-primary" onclick="temperatureRule()">Set Rule</button>
+                          <button type="submit" class="btn btn-primary" onclick="temperatureRule()">Update</button>
                         </div>
                       </li>
                     </ul>
                   </div>
                 </div>
+              </div>
+              <div class="col d-flex justify-content-center">
+                <h1 id="controller-th">TH</h1>
               </div>
               <div class="col d-flex justify-content-end">
                 <h1 id="controller-status">Status</h1>

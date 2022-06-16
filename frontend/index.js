@@ -74,6 +74,7 @@ function handleController(data) {
 
 function handleEnvData(data) {
   envData = data.data.env_data
+  document.getElementById('controller-th').innerHTML = envData[envData.length - 1].temperature + '° ' + envData[envData.length - 1].humidity + '%'
 }
 
 function initWebsocketConnection() {
@@ -168,7 +169,7 @@ function renderChart(data) {
       }
     },
     series: [{
-        data: data
+      data: data
     }],
     yaxis: {
       type: 'category'
@@ -184,11 +185,11 @@ function scheduleUpdate() {
   setTimeout(() => {
     console.log('scheduleUpdate: ' + envData)
     console.log(envData)
-    // if (typeof envData != 'object') {
-      // scheduleUpdate()
-    // } else {
-      renderChart(envData.map(v => ({x: v.timepoint, y: v.temperature})))
-    // }
+    renderChart(envData.map(v => {
+      let options = {year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}
+      let date =  new Date(Date.parse(v.timepoint))
+      return {x: date.toLocaleDateString('en-GB', options), y: v.temperature}
+    }))
   }, 2000);
 }
 
