@@ -215,7 +215,7 @@ function entryPoint() {
   createChart()
   getControllers()
   updateCurrentData()
-  setInterval(updateCurrentData, 15000)
+  setInterval(updateCurrentData, 10000)
 }
 
 initWebsocketConnection()
