@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.3'
 services:
   db:
     image: postgres
@@ -32,4 +32,5 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./frontend:/usr/share/nginx/html
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/htdocs:/usr/share/nginx/html

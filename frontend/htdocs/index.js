@@ -78,7 +78,7 @@ function handleEnvData(data) {
 }
 
 function initWebsocketConnection() {
-  socket = new WebSocket('ws://localhost:8080/api');
+  socket = new WebSocket('ws://' + location.host + ':8080/api');
 
   socket.addEventListener('message', ev => {
     let data = JSON.parse(ev.data);
