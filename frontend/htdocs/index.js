@@ -42,8 +42,6 @@ function updateData() {
 function updateControllerStatus() {
   document.getElementById('controller-name').innerHTML = controllers[controllerIndex].name
   document.getElementById('controller-status').innerHTML = controllers[controllerIndex].state == 'online' ? '🟢 ONLINE' : '🔴 OFFLINE'
-  updateCurrentData()
-  scheduleUpdate()
 }
 
 function setController(i) {
