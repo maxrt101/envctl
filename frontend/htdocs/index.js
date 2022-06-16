@@ -192,7 +192,7 @@ function scheduleUpdate() {
         return {x: date.toLocaleDateString('en-GB', options), y: v.temperature}
       })
     }])
-  }, 2000);
+  }, 2500);
 }
 
 function updateCurrentData() {
@@ -201,14 +201,14 @@ function updateCurrentData() {
     setTimeout(() => {
       getData(controllers[controllerIndex].name)
       scheduleUpdate()
-    }, 2000)
+    }, 2500)
   }
 }
 
 function entryPoint() {
   getControllers()
   createChart()
-  setTimeout(updateCurrentData, 2000)
+  updateCurrentData()
   setInterval(updateCurrentData, 15000)
 }
 
