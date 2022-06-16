@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "author": "maxrt",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 135.5,
+      "left": -86.4,
+      "rotate": 90,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd2",
+      "top": 6.4,
+      "left": -13.6,
+      "attrs": { "pins": "i2c" }
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": 19.5,
+      "left": -163.6,
+      "attrs": { "temperature": "45.8", "humidity": "44" }
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servo1",
+      "top": 284.45,
+      "left": -298.37,
+      "rotate": 180,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "esp:GND.2", "lcd2:GND", "black", [ "h0.1", "v-310.37" ] ],
+    [ "lcd2:VCC", "esp:VIN", "red", [ "h-76.8", "v144.1" ] ],
+    [ "esp:D22", "lcd2:SCL", "green", [ "v18.9", "h48.3", "v-144", "h-115.2", "v-96.3" ] ],
+    [ "esp:D21", "lcd2:SDA", "green", [ "v28.5", "h86.8", "v-144", "h-134.4", "v-115.4" ] ],
+    [ "esp:GND.2", "dht1:GND", "black", [ "v0" ] ],
+    [ "esp:VIN", "dht1:VCC", "red", [ "v-28.8", "h-115.2" ] ],
+    [ "esp:D13", "dht1:SDA", "green", [ "v-38.4", "h-73.8" ] ],
+    [ "servo1:GND", "esp:GND.1", "black", [ "h0" ] ],
+    [ "servo1:V+", "esp:3V3", "green", [ "h0" ] ],
+    [ "servo1:PWM", "esp:D2", "green", [ "h0" ] ]
+  ]
+}

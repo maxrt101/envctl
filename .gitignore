@@ -1,0 +1,12 @@
+
+# Java
+target/
+
+# IDE/Editors
+.idea/
+.vscode
+.sw*
+.*.sw*
+
+# MacOS
+.DS_Store

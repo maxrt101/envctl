@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  db:
+    image: postgres
+    container_name: envctl-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: controller
+    volume:
+      - ./backend/sql:/docker-entrypoint-initdb.d/
+
+  backend:
+    depends_on:
+      - db
+    image: openjdk:17
+    container_name: envctl-backend
+    command: bash -c "wget $JAR_URL -O $JAR_FILE && java -jar $JAR_FILE"
+    environment:
+      JAR_FILE: envctl.jar
+      JAR_URL: https://github.com/maxrt101/envctl/releases/download/envctl-v1.0/envctl.jar
+
+  frontend:
+    image: nginx:alpine
+    container_name: envctl-frontend
+    ports:
+      - 80:80
+    volumes:
+      - ./frontend:/usr/share/nginx/html

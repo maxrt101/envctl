@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>EnvironmentControl</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" >
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-2 border-0 p-3 shadow bg-body rounded">
+          <h2 class="mb-4 text-truncate">Controllers:<h21>
+          <div id="controller-buttons" class="d-flex flex-column justify-content-center"></div>
+        </div>
+        <div class="col-10">
+          <div class="border-0 mb-4 p-3 shadow bg-body rounded">
+            <div class="row">
+              <div class="col">
+                <div class="d-flex flex-row">
+                  <div class="me-4">
+                    <h1 id="controller-name">Controller</h1>
+                  </div>
+                  <div class="dropdown d-flex align-items-center">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Fan
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><button class="dropdown-item" onclick="fanStart()">Start</button></li>
+                      <li><button class="dropdown-item" onclick="fanStop()">Stop</button></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li class="ps-2 pe-2">
+                        <div class="d-flex justify-content-center align-items-center">
+                          <span class="font-weight-bold indigo-text">0</span>
+                          <form class="range-field d-flex align-items-center ms-2 me-2">
+                            <input class="border-0" type="range" min="1" max="100" id="speedInput" />
+                          </form>
+                          <span class="font-weight-bold indigo-text">100</span>
+                        </div>
+                      </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <div class="d-flex justify-content-center align-items-center ms-2 me-2">
+                          <input type="input" class="form-control me-2" id="temperatureInput">
+                          <button type="submit" class="btn btn-primary" onclick="temperatureRule()">Set Rule</button>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col d-flex justify-content-end">
+                <h1 id="controller-status">Status</h1>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4 d-none" id="alert"></div>
+          <div class="border-0 p-3 shadow bg-body rounded">
+            <div class="p-3" id="graph">
+              Select one of the controllers on the left
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
+
