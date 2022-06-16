@@ -22,7 +22,7 @@ object Command {
         case _ => return Protocol.formError("Unknown client type")
       }, session))
 
-    if (json.getJSONObject("data").getString("type").equals("controllers")
+    if (json.getJSONObject("data").getString("type").equals("controller")
         && Dao.controllerDao.getByField("name", sender).isEmpty) {
       val controller = new Controller
       controller.name = sender
