@@ -19,7 +19,7 @@
           </div>
           <div id="controller-buttons" class="d-flex flex-column justify-content-center"></div>
           <div class="position-absolute bottom-0 mb-3">
-            <button class="btn btn-primary">Rename</button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#renameModal">Rename</button>
           </div>
         </div>
         <div class="col-10">
@@ -71,6 +71,23 @@
             <div class="p-3" id="graph">
               Select one of the controllers on the left
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="renameModal" tabindex="-1" aria-labelledby="renameModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="renameModalLabel">Rename Controller</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="input" class="form-control me-2" id="nameInput">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="renameController()">Rename</button>
           </div>
         </div>
       </div>

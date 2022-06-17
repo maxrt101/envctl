@@ -172,6 +172,18 @@ function temperatureRule() {
   socket.send(JSON.stringify(data))
 }
 
+function renameController() {
+  let data = {
+    command: 'update_name',
+    sender: clientId,
+    data: {
+      controller: controllers[controllerIndex].name,
+      name: document.getElementById('nameInput').value
+    }
+  }
+  socket.send(JSON.stringify(data))
+}
+
 // [{x: string, y: float}]
 function createChart() {
   document.getElementById("graph").innerHTML = ""
@@ -200,7 +212,6 @@ function createChart() {
   })
   chart.render();
 }
-
 
 function updateCurrentData() {
   if (socket.readyState == 1) {
