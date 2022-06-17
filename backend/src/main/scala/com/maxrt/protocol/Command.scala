@@ -39,21 +39,22 @@ object Command {
   }
 
   def reregister(sender: String, json: JSONObject, session: Session): JSONObject = {
+    val newName = json.getJSONObject("data").getString("name")
     Protocol.clients.remove(sender)
     Protocol.sessions.remove(session.getId)
-    Protocol.sessions.put(session.getId, sender)
+    Protocol.sessions.put(session.getId, newName)
 
     if (Dao.controllerDao.getByField("name", sender).isEmpty) {
       val controller = new Controller
-      controller.name = sender
+      controller.name = newName
       Dao.controllerDao.save(controller)
     } else {
       var controller = Dao.controllerDao.getByField("name", sender)(0)
-      controller.name = sender
+      controller.name = newName
       Dao.controllerDao.update(controller)
     }
 
-    Protocol.clients.put(sender,
+    Protocol.clients.put(newName,
       Client(json.getJSONObject("data").getString("type") match {
         case "controller" => Client.Type.Controller
         case "client" => Client.Type.Webclient
