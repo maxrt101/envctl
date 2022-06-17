@@ -1,6 +1,7 @@
 /**
  * EnvironmentController
  *
+ * @version v1.0
  * @author maxrt
  */
 
@@ -60,7 +61,7 @@ struct State {
   byte dataUpdateTimeout = 5; // Seconds
   bool fanEnabled = false;
   bool fanAutoEnabled = false;
-  byte fanSpeed = 75;
+  byte fanSpeed = 75; // Percent
 
   State() : lcd(DISPLAY_PORT, 16, 2) {}
 
@@ -153,11 +154,11 @@ struct State {
     }
 
     for (int i = EEPROM_SERVER_IP_START; i < EEPROM_SERVER_IP_END; i++) {
-      EEPROM.write(i, deviceName[i-EEPROM_SERVER_IP_START]);
+      EEPROM.write(i, serverIp[i-EEPROM_SERVER_IP_START]);
     }
 
     for (int i = EEPROM_SERVER_PORT_START; i < EEPROM_SERVER_PORT_END; i++) {
-      EEPROM.write(i, deviceName[i-EEPROM_SERVER_PORT_START]);
+      EEPROM.write(i, serverPort[i-EEPROM_SERVER_PORT_START]);
     }
 
     EEPROM.write(EEPROM_FAN_THRESHOLD_START, fanThresholdTemp);
@@ -171,6 +172,14 @@ struct State {
     lcd.print("EnvControl v1.0");
     lcd.setCursor(0, 1);
     lcd.print("Initializing");
+  }
+
+  void printConfig() {
+    Serial.println(String("[cfg] deviceName=") + deviceName);
+    Serial.println(String("[cfg] serverIp=") + serverIp);
+    Serial.println(String("[cfg] serverPort=") + serverPort);
+    Serial.println(String("[cfg] fanThresholdTemp=") + fanThresholdTemp);
+    Serial.println(String("[cfg] dataUpdateTimeout=") + dataUpdateTimeout);
   }
 
   int calculateFanTimeoutFromSpeed() {
@@ -247,8 +256,10 @@ void IRAM_ATTR onTimer() {
 
 void handleCommandUpdateName(StaticJsonDocument<200>& json) {
   String name = json["data"]["name"].as<String>();
-  if (name.length() < EEPROM_DEVICE_NAME_SIZE) {
-    String msg = "[WS] Error name length is more than ";
+  if (name.length() > EEPROM_DEVICE_NAME_SIZE) {
+    String msg = "[WS] Error: name length (";
+    msg += name.length();
+    msg += ") is more than ";
     msg += String(EEPROM_DEVICE_NAME_SIZE);
     Serial.println(msg);
     return;
@@ -258,7 +269,8 @@ void handleCommandUpdateName(StaticJsonDocument<200>& json) {
   command["sender"] = state.deviceName;
 
   JsonObject data = command.createNestedObject("data");
-  data["controller"] = name;
+  data["name"] = name;
+  data["type"] = "controller";
 
   char buffer[256] = {0};
   serializeJson(command, buffer, 256);
@@ -369,7 +381,7 @@ void loop() {
     String cmd = Serial.readString();
     cmd.trim();
     if (cmd.startsWith("config")) {
-      //
+      state.printConfig();
     } else if (cmd.startsWith("http_get_r")) {
       httpGet(cmd.substring(11), true);
     } else if (cmd.startsWith("http_get")) {
@@ -388,7 +400,6 @@ void loop() {
       delay(state.calculateFanTimeoutFromSpeed());
     }
   }
-
 
   delay(100);
 }
