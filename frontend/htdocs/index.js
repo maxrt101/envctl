@@ -83,6 +83,7 @@ function getData(controller) {
 function handleController(data) {
   controllers = data.data.controllers
   generateButtons()
+  getData(controllers[controllerIndex].name)
 }
 
 function handleEnvData(data) {
@@ -216,9 +217,8 @@ function createChart() {
 function updateCurrentData() {
   if (socket.readyState == 1) {
     getControllers()
-    setTimeout(() => {
-      getData(controllers[controllerIndex].name)
-    }, 2500)
+  } else {
+    createAlert('Connection Error')
   }
 }
 
