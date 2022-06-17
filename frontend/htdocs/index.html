@@ -13,11 +13,14 @@
   <body>
     <div class="container mt-4">
       <div class="row">
-        <div class="col-2 border-0 p-3 shadow bg-body rounded">
+        <div class="col-2 border-0 p-3 shadow bg-body rounded position-relative">
           <div class="mb-2">
             <h2 class="text-truncate">Controllers:<h2>
           </div>
           <div id="controller-buttons" class="d-flex flex-column justify-content-center"></div>
+          <div class="position-absolute bottom-0 mb-3">
+            <button class="btn btn-primary">Rename</button>
+          </div>
         </div>
         <div class="col-10">
           <div class="border-0 mb-4 p-3 shadow bg-body rounded">
@@ -28,7 +31,7 @@
                     <h1 id="controller-name">Controller</h1>
                   </div>
                   <div class="dropdown d-flex align-items-center">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                       Fan
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
